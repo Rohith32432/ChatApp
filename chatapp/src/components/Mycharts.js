@@ -50,12 +50,12 @@ const MyChats = ({ fetchAgain }) => {
 
   return (
     <Box
-      d={{ base: selectedChat ? "none" : "flex", md: "flex" }}
+      display={{ base: selectedChat ? "none" : "flex", md: "flex" }}
       flexDir="column"
       alignItems="center"
       p={3}
       bg="white"
-      w={{ base: "100%", md: "31%" }}
+      width={{ base: "100%", md: "31%" }}
       height={'100%'}
       borderRadius="lg"
       borderWidth="1px"
@@ -88,11 +88,12 @@ const MyChats = ({ fetchAgain }) => {
         flexDir="column"
         p={3}
         h="100%"
+        width={'100%'}
         borderRadius="lg"
         overflowY="hidden"
       >
         {chats ? (
-          <Stack overflowY="scroll">
+          <Stack overflowY="scroll" >
             {chats.map((chat) => (
               <Box
                 onClick={() => setSelectedChat(chat)}
