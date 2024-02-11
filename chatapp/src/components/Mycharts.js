@@ -8,6 +8,7 @@ import ChatLoading from "./Loading";
 // import GroupChatModal from "./miscellaneous/GroupChatModal";
 import { Button } from "@chakra-ui/react";
 import { ChatState } from "../Context/context";
+import Groupmodel from "./Groups/groupmodel";
 
 const MyChats = ({ fetchAgain }) => {
   const [loggedUser, setLoggedUser] = useState();
@@ -26,7 +27,9 @@ const MyChats = ({ fetchAgain }) => {
       };
 
       const { data } = await axios.get("http://localhost:2021/api/chat", config);
+      
       setChats(data);
+      // console.log(data);
     } catch (error) {
       toast({
         title: "Error Occured!",
@@ -69,6 +72,7 @@ const MyChats = ({ fetchAgain }) => {
       >
         My Chats
         <>
+        <Groupmodel>
           <Button
             display="flex"
             fontSize={{ base: "17px", md: "10px", lg: "17px" }}
@@ -76,6 +80,7 @@ const MyChats = ({ fetchAgain }) => {
           >
             New Group Chat
           </Button>
+          </Groupmodel>
         </>
       </Box>
       <Box
@@ -99,6 +104,7 @@ const MyChats = ({ fetchAgain }) => {
                 borderRadius="lg"
                 key={chat._id}
               >
+     
                 <Text>
                   {!chat.isGroupChat
                     ? getSender(loggedUser, chat.users)

@@ -9,7 +9,6 @@ const accessChat = asyncHandler(async (req, res) => {
     console.log("UserId param not sent with request");
     return res.sendStatus(400);
   }
-  console.log(userId);
   var isChat = await Chat.find({
     isGroupChat: false,
     $and: [
@@ -78,7 +77,7 @@ const createGroupChat = asyncHandler(async (req, res) => {
   if (!req.body.users || !req.body.name) {
     return res.status(400).send({ message: "Please Fill all the feilds" });
   }
-
+  
   var users = JSON.parse(req.body.users);
 
   if (users.length < 2) {
