@@ -78,8 +78,7 @@ const GroupChatModal = ({ children }) => {
     const handleDelete = (delUser) => {
         setSelectedUsers(selectedUsers.filter((sel) => sel._id !== delUser._id));
     };
-
-    const handleSubmit = async () => {
+ const handleSubmit = async () => {
         if (!groupChatName || !selectedUsers) {
             toast({
                 title: "Please fill all the feilds",
