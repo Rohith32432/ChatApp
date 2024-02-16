@@ -48,6 +48,7 @@ const registerUser = async (req, res) => {
 const loginuser= async(req,res)=>{
     const {email,password}=req.body
     const user=await User.findOne({email: email})
+   
     const de= bcrypt.compareSync(password, user.password)
     // user.token=createtoken(user._id)
     if(de)
