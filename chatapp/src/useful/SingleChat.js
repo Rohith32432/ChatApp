@@ -1,16 +1,102 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import{ ChatState } from '../Context/context'
-import { Box, IconButton, Text } from '@chakra-ui/react'
-
+import { Box, FormControl, IconButton, Input, Spinner, Text, Toast } from '@chakra-ui/react'
+import './style.css'
 import { FaArrowLeft } from "react-icons/fa";
 import { getSender, getSenderFull } from './chatlogic';
 import ProfileModal from '../components/miscellaneous/ProfileModal';
 import UpdateGroupModel from '../components/Groups/UpdateGroupModel';
+import axios from 'axios';
+import Scrollchat from './Scrollchat';
 
 function SingleChat({fetchAgain,setFetchAgain}) {
     const [messages, setMessages] = useState([]);
     const {user,selectedChat,setSelectedChat}=ChatState()
+    const [loading, setLoading] = useState(false);
+    const [istyping, setIsTyping] = useState(false);
+    const [newMessage, setNewMessage] = useState("");
 
+    const sendMessage = async (event) => {
+      if (event.key === "Enter" && newMessage) {
+        // socket.emit("stop typing", selectedChat._id);
+        try {
+          const config = {
+            headers: {
+              "Content-type": "application/json",
+              Authorization: `Bearer ${user.token}`,
+            },
+          };
+          setNewMessage(" ")
+          const { data } = await axios.post(
+            "http://localhost:2021/api/messages",
+            {
+              content: newMessage,
+              chatId: selectedChat,
+            },
+            config
+            );
+          console.log(data);
+          // socket.emit("new message", data);
+          setMessages([...messages, data]);
+        } catch (error) {
+          Toast({
+            title: "Error Occured!",
+            description: "Failed to send the Message",
+            status: "error",
+            duration: 5000,
+            isClosable: true,
+            position: "bottom",
+          });
+        }
+      }
+    };
+    const fetchMessages = async () => {
+      if (!selectedChat) return;
+  
+      try {
+        const config = {
+          headers: {
+            Authorization: `Bearer ${user.token}`,
+          },
+        };
+  
+        setLoading(true);
+  
+        const { data } = await axios.get(
+          `http://localhost:2021/api/messages/${selectedChat._id}`,
+          config
+        );
+        console.log(data);
+        setMessages(data);
+        setLoading(false);
+  
+        // socket.emit("join chat", selectedChat._id);
+
+      } catch (error) {
+        Toast({
+          title: "Error Occured!",
+          description: "Failed to Load the Messages",
+          status: "error",
+          duration: 5000,
+          isClosable: true,
+          position: "bottom",
+        });
+      }
+    };
+  
+    const typingHandler=(e)=>{
+      setNewMessage(e.target.value)
+    }
+
+
+
+
+    useEffect(() => {
+      fetchMessages();
+  
+      // selectedChatCompare = selectedChat;
+      // // eslint-disable-next-line
+    }, [selectedChat]);
   return (
     <>
         {
@@ -41,7 +127,7 @@ function SingleChat({fetchAgain,setFetchAgain}) {
                   <>
                     {selectedChat.chatName.toUpperCase()}
                     <UpdateGroupModel
-                    
+                    fetchMessages={fetchMessages}
                     fetchAgain={fetchAgain}
                     setFetchAgain={setFetchAgain}
                   />
@@ -59,7 +145,46 @@ function SingleChat({fetchAgain,setFetchAgain}) {
             borderRadius="lg"
             overflowY="hidden"
             >
-                    message here
+               {loading ? (
+              <Spinner
+                size="xl"
+                w={20}
+                h={20}
+                alignSelf="center"
+                margin="auto"
+              />
+            ) : (
+              <div className="messages">
+                <Scrollchat messages={messages} />
+              </div>
+            )}
+
+          <FormControl
+              onKeyDown={sendMessage}
+              id="first-name"
+              isRequired
+              mt={3}
+            >
+              {istyping ? (
+                <div>
+                  {/* <Lottie
+                    options={defaultOptions}
+                    // height={50}
+                    width={70}
+                    style={{ marginBottom: 15, marginLeft: 0 }}
+                  /> */}
+                </div>
+              ) : (
+                <></>
+              )}
+              <Input
+                variant="filled"
+                bg="#E0E0E0"
+                placeholder="Enter a message.."
+                value={newMessage}
+                onChange={typingHandler}
+              />
+            </FormControl>
 
             </Box>
             

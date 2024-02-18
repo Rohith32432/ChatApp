@@ -6,6 +6,7 @@ const mongoose = require('mongoose');
 const { registerUser } = require('./controllers/useercontroller');
 const userrouter = require('./routes/userRoutes');
 const chatRoutes = require('./routes/chatroutes');
+const msgroutes = require('./routes/messagerouter');
 app.use(cors())
 app.use(express.json())
 main().catch(err => console.log(err));
@@ -20,6 +21,7 @@ app.get('/',(req,res)=>{
 })
 app.use('/api/user',userrouter)
 app.use("/api/chat", chatRoutes);
+app.use('/api/messages', msgroutes)
 
 app.listen(2021,()=>{
     console.log('conteted to port 2021');
