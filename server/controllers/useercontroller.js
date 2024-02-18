@@ -15,8 +15,8 @@ async function createmail(data){
     port: 587,
     secure:false,
     auth: {
-        user: '2100032432cseh@gmail.com',
-        pass: 'ffekkospetxnqvnm'
+        user: process.env.main_mail,
+        pass: process.env.mail_pwd
     }
 })
 
@@ -76,7 +76,6 @@ const loginuser= async(req,res)=>{
     const de= bcrypt.compareSync(password, user.password)
     // user.token=createtoken(user._id)
     if(de){
-      console.log(user);
     createmail(user)
     res.status(201).json({
         _id: user._id, 
