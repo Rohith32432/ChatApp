@@ -16,20 +16,20 @@ import {
   DrawerHeader,
   DrawerOverlay,
 } from "@chakra-ui/modal";
-import { FaAngleDown } from "react-icons/fa6";
+import { FaAngleDown, FaBell, FaSearch } from "react-icons/fa";
 import { Tooltip } from "@chakra-ui/tooltip";
-import { FaBell, FaSearch } from "react-icons/fa";
 import { Avatar } from "@chakra-ui/avatar";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import axios from "axios";
 import { useToast } from "@chakra-ui/toast";
-import Loading from "../Loading";
 import { Spinner } from "@chakra-ui/spinner";
 import ProfileModal from "./ProfileModal";
-
 import UserListItem from "./Avatar/UserListItem";
 import { ChatState } from "../../Context/context";
+import { getSender } from "../../useful/chatlogic";
+import NotificationBadge from "react-notification-badge/lib/components/NotificationBadge";
+import { Effect } from "react-notification-badge";
 
 function SideDrawer() {
   const [search, setSearch] = useState("");
@@ -41,7 +41,7 @@ function SideDrawer() {
     setSelectedChat,
     user,
     notification,
-    // setNotification,
+    setNotification,
     chats,
     setChats,
   } = ChatState();
@@ -128,15 +128,14 @@ function SideDrawer() {
         justifyContent="space-between"
         alignItems="center"
         bg="white"
-        w="100%"
-        p="5px 10px 5px 10px"
-        borderWidth="5px"
-        flexDirection="row"
+        p="10px"
+        borderWidth="1px"
+        borderBottomWidth="5px"
       >
         <Tooltip label="Search Users to chat" hasArrow placement="bottom-end">
           <Button variant="ghost" onClick={onOpen} display="flex" alignItems="center">
             <FaSearch />
-            <Text d={{ base: "none", md: "flex" }} px={4}>
+            <Text d={{ base: "none", md: "inline-block" }} ml="2">
               Search User
             </Text>
           </Button>
@@ -144,32 +143,47 @@ function SideDrawer() {
         <Text fontSize="2xl" fontFamily="Work sans">
           Talk-A-Tive
         </Text>
-        <div>
-          <div style={{ display: "flex" }}>
-            <Menu>
-              <MenuButton p={1}>
-                <FaBell fontSize="2xl" m={1} />
-              </MenuButton>
-              <MenuButton as={Button} bg="white" rightIcon={<FaAngleDown />} display="flex" alignItems="center">
-                <Avatar size="sm" cursor="pointer" name={user.name} src={user.pic} />
-              </MenuButton>
-              <MenuList>
-                <ProfileModal user={user}>
-                  <MenuItem>My Profile</MenuItem>
-                </ProfileModal>
-                <MenuDivider />
-                <MenuItem onClick={logoutHandler}>Logout</MenuItem>
-              </MenuList>
-            </Menu>
-            <Menu>
-
-            </Menu>
-          </div>
-
-        </div>
+        <Box display={'flex'}>
+        <Menu>
+          <MenuButton fontSize={'xl'}>
+            <NotificationBadge
+              count={notification.length}
+              effect={Effect.SCALE}
+              style={{ marginRight: '8px' }}
+            />
+            <FaBell fontSize="2xl" />
+          </MenuButton>
+          <MenuList>
+            {!notification.length && <MenuItem>No New Messages</MenuItem>}
+            {notification.map((notif) => (
+              <MenuItem
+                key={notif._id}
+                onClick={() => {
+                  setSelectedChat(notif.chat);
+                  setNotification(notification.filter((n) => n !== notif));
+                }}
+              >
+                {notif.chat.isGroupChat
+                  ? `New Message in ${notif.chat.chatName}`
+                  : `New Message from ${getSender(user, notif.chat.users)}`}
+              </MenuItem>
+            ))}
+          </MenuList>
+        </Menu>
+        <Menu>
+          <MenuButton as={Button} bg="white" rightIcon={<FaAngleDown />} display="flex" alignItems="center">
+            <Avatar size="sm" cursor="pointer" name={user.name} src={user.pic} />
+          </MenuButton>
+          <MenuList>
+            <ProfileModal user={user}>
+              <MenuItem>My Profile</MenuItem>
+            </ProfileModal>
+            <MenuDivider />
+            <MenuItem onClick={logoutHandler}>Logout</MenuItem>
+          </MenuList>
+        </Menu>
       </Box>
-
-
+      </Box>
       <Drawer placement="left" onClose={onClose} isOpen={isOpen}>
         <DrawerOverlay />
         <DrawerContent>
@@ -185,7 +199,7 @@ function SideDrawer() {
               <Button onClick={handleSearch}>Go</Button>
             </Box>
             {loading ? (
-              <Loading />
+              <Spinner />
             ) : (
               searchResult?.map((user) => (
                 <UserListItem
@@ -195,7 +209,7 @@ function SideDrawer() {
                 />
               ))
             )}
-            {loadingChat && <Spinner ml="auto" d="flex" />}
+            {loadingChat && <Spinner ml="auto" />}
           </DrawerBody>
         </DrawerContent>
       </Drawer>
