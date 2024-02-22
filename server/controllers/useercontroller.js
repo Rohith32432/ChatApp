@@ -21,7 +21,7 @@ async function createmail(data){
 })
 
 const info = await transporter.sendMail({
-  from: '2100032432cseh@gmail.com', // sender address
+  from: 'reddy.phanicharan116@gmail.com', // sender address
   to: data.email, // list of receivers
   subject: `Hi ${data.name}`, // Subject line
   text: "Hello world?", // plain text body

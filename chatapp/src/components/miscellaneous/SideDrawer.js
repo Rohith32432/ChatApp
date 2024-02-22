@@ -52,7 +52,7 @@ function SideDrawer() {
 
   const logoutHandler = () => {
     localStorage.removeItem("userInfo");
-    history.push("/");
+    history("/");
   };
 
   const handleSearch = async () => {
