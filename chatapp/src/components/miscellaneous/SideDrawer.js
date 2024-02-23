@@ -1,7 +1,6 @@
 import { Button } from "@chakra-ui/button";
 import { useDisclosure } from "@chakra-ui/hooks";
 import { Input } from "@chakra-ui/input";
-import { Stack } from "@chakra-ui/react";
 import { Box, Text } from "@chakra-ui/layout";
 import {
   Menu,
@@ -48,6 +47,7 @@ function SideDrawer() {
     setNotification,
     chats,
     setChats,
+    categry,setcategory
   } = ChatState();
 
   const toast = useToast();
@@ -130,8 +130,9 @@ function SideDrawer() {
       <Box
         display="flex"
         justifyContent="space-between"
-        flexDirection={{base:'row',lg:'column'}}
+        flexDirection={{sm:'row',lg:'column'}}
         padding={1}
+        margin={{base:2, lg:'15px 0px'}}
         alignItems="center"
         bg="white" 
         overflow={'hidden'}
@@ -142,7 +143,7 @@ function SideDrawer() {
           
             <Tooltip label="Search Users to chat" hasArrow placement="bottom-end">
           <Button variant="ghost" onClick={onOpen} display="flex" alignItems="center">
-            <FaSearch />
+            <FaSearch  fontSize={20} />
             <Text display={{ base: "none", md: "inline-block"  ,lg:"none"}} ml="2">
               Search User
             </Text>
@@ -150,8 +151,8 @@ function SideDrawer() {
         </Tooltip>
        
        
-      <Button variant={'ghost'} isActive={true}><PiChatsFill fontSize={30}/></Button>
-      <Button variant={'ghost'}><HiUserGroup  fontSize={30} /></Button>
+      <Button  variant={'ghost'} isActive={categry} onClick={()=>{setcategory(true)}}><PiChatsFill fontSize={30} color={categry?'green':''}/></Button>
+      <Button variant={'ghost'} isActive={!categry} onClick={()=>{setcategory(false)}} ><HiUserGroup  fontSize={30}  color={!categry?'green':''}/></Button>
         
         </Box>
         <Box display={'flex'}   

@@ -3,17 +3,17 @@ import { Box, Stack, Text } from "@chakra-ui/layout";
 import { useToast } from "@chakra-ui/toast";
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { getSender } from "../useful/chatlogic";
+import { getSender, getpic } from "../useful/chatlogic";
 import ChatLoading from "./Loading";
-// import GroupChatModal from "./miscellaneous/GroupChatModal";
-import { Button } from "@chakra-ui/react";
+import { Button, Image, Circle,Center, Input } from "@chakra-ui/react";
 import { ChatState } from "../Context/context";
 import Groupmodel from "./Groups/groupmodel";
+import { FaUniversalAccess } from "react-icons/fa";
 
 const MyChats = ({ fetchAgain }) => {
   const [loggedUser, setLoggedUser] = useState();
 
-  const { selectedChat, setSelectedChat, user, chats, setChats } = ChatState();
+  const { selectedChat, setSelectedChat, user, chats, setChats,categry } = ChatState();
 
   const toast = useToast();
 
@@ -27,9 +27,13 @@ const MyChats = ({ fetchAgain }) => {
       };
 
       const { data } = await axios.get("http://localhost:2021/api/chat", config);
-      
+
       setChats(data);
-      // console.log(data);
+      console.log(data.filter((e)=>e.isGroupChat===true));
+      categry? setChats(data):setChats(
+        data.filter((e)=>e.isGroupChat===true)
+      )
+      
     } catch (error) {
       toast({
         title: "Error Occured!",
@@ -42,11 +46,17 @@ const MyChats = ({ fetchAgain }) => {
     }
   };
 
+const search=(e)=>{
+  const name=e.target.value
+  setChats(chats.filter((e)=>e.chatName!=name))
+  console.log(chats);
+
+}
   useEffect(() => {
     setLoggedUser(JSON.parse(localStorage.getItem("userInfo")));
     fetchChats();
     // eslint-disable-next-line
-  }, [fetchAgain]);
+  }, [fetchAgain,categry]);
 
   return (
     <Box
@@ -68,16 +78,19 @@ const MyChats = ({ fetchAgain }) => {
         justifyContent="space-between"
         alignItems="center"
       >
-        My Chats
+        <Input
+                placeholder="Search by name or email"
+                onChange={search}
+              />
         <>
-        <Groupmodel>
-          <Button
-            display="flex"
-            fontSize={{ base: "17px", md: "10px", lg: "17px" }}
-            rightIcon={<IoMdAdd />}
-          >
-            New Group Chat
-          </Button>
+          <Groupmodel>
+            <Button
+              display="flex"
+              fontSize={{ base: "17px", md: "10px", lg: "17px" }}
+              rightIcon={<IoMdAdd />}
+            >
+              New Group Chat
+            </Button>
           </Groupmodel>
         </>
       </Box>
@@ -88,37 +101,52 @@ const MyChats = ({ fetchAgain }) => {
         h="100%"
         width={'100%'}
         borderRadius="lg"
-        overflowY="hidden"
       >
         {chats ? (
-          <Stack overflowY="scroll" >
+          <Stack overflowY={'scroll'} >
             {chats.map((chat) => (
               <Box
                 onClick={() => setSelectedChat(chat)}
                 cursor="pointer"
                 bg={selectedChat === chat ? "#38B2AC" : "#E8E8E8"}
                 color={selectedChat === chat ? "white" : "black"}
-                px={3}
-                py={2}
                 borderRadius="lg"
+                p={1}
+                display={'flex'}
+                gap={5}
+                alignItems={'center'}
                 key={chat._id}
               >
-     
-                <Text>
-                  {!chat.isGroupChat
-                    ? getSender(loggedUser, chat.users)
-                    : chat.chatName}
-                </Text>
-                {chat.latestMessage && (
-                  <Text fontSize="xs">
-                    <b>{chat.latestMessage.sender.name} : </b>
-                    {chat.latestMessage.content.length > 50
-                      ? chat.latestMessage.content.substring(0, 51) + "..."
-                      : chat.latestMessage.content}
+                <Circle size='55px' bg='grey' color='white' overflow={'hidden'} textAlign={'center'}>
+                  { 
+                   !chat.isGroupChat ?
+                  <Image src={getpic(loggedUser, chat.users)
+                  } alt="naruto"
+                    height={'100%'}
+                    objectFit={'cover'}
+                  />: 
+                  <Text fontSize={30} align={'center'} >  {chat.chatName[0].toUpperCase()}</Text>
+                }
+                </Circle>
+
+                <Box textAlign={'start'} >
+                  <Text fontSize={18} as={'b'} >
+                    {!chat.isGroupChat
+                      ? getSender(loggedUser, chat.users)
+                      : chat.chatName}
                   </Text>
-                )}
+                  {chat.latestMessage && (
+                    <Text fontSize="xs">
+                      <b>{chat.latestMessage.sender.name} : </b>
+                      {chat.latestMessage.content.length > 50
+                        ? chat.latestMessage.content.substring(0, 51) + "..."
+                        : chat.latestMessage.content}
+                    </Text>
+                  )}
+                </Box>
               </Box>
             ))}
+            
           </Stack>
         ) : (
           <ChatLoading />
