@@ -3,7 +3,7 @@ import { Box, Stack, Text } from "@chakra-ui/layout";
 import { useToast } from "@chakra-ui/toast";
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { getSender, getpic } from "../useful/chatlogic";
+import { filteruser, getSender, getpic } from "../useful/chatlogic";
 import ChatLoading from "./Loading";
 import { Button, Image, Circle,Center, Input } from "@chakra-ui/react";
 import { ChatState } from "../Context/context";
@@ -29,7 +29,7 @@ const MyChats = ({ fetchAgain }) => {
       const { data } = await axios.get("http://localhost:2021/api/chat", config);
 
       setChats(data);
-      console.log(data.filter((e)=>e.isGroupChat===true));
+      // console.log(data.filter((e)=>e.isGroupChat===true));
       categry? setChats(data):setChats(
         data.filter((e)=>e.isGroupChat===true)
       )
@@ -46,12 +46,13 @@ const MyChats = ({ fetchAgain }) => {
     }
   };
 
-const search=(e)=>{
-  const name=e.target.value
-  setChats(chats.filter((e)=>e.chatName!=name))
-  console.log(chats);
+  const search = (e) => {
+    const name = e.target.value
+    filteruser(name,chats)
 
-}
+  };
+  
+  
   useEffect(() => {
     setLoggedUser(JSON.parse(localStorage.getItem("userInfo")));
     fetchChats();

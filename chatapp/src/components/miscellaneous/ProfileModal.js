@@ -26,24 +26,23 @@ const ProfileModal = ({ user, children }) => {
       ) : (
         <IconButton d={{ base: "flex" }} icon={<IoEye />} onClick={onOpen} />
       )}
-      <Modal size="lg" onClose={onClose} isOpen={isOpen} isCentered>
+
+      <Modal size="lg" onClose={onClose} isOpen={isOpen}  isCentered>
         <ModalOverlay />
-        <ModalContent h="410px">
-          <ModalHeader fontSize="40px" fontFamily="Work sans" d="flex" justifyContent="center">
-            {user.name}
-          </ModalHeader>
-          <ModalCloseButton />
-          <ModalBody>
-            <Flex flexDirection={ "column"} alignItems="center" justifyContent="space-between">
-              <Box>
-                <Image borderRadius="full" boxSize="150px" src={user.pic} alt={user.name} />
-              </Box>
-              <Box>
-                <Text fontSize={{ base: "28px", md: "30px" }} fontFamily="Work sans">
-                  Email: {user.email}
+        <ModalContent h="400" w={400} borderRadius={10} overflow={'hidden'} >
+          <ModalCloseButton fontSize={20} />
+          <ModalBody p={0} boxSizing="border-box" >
+            
+              <Box display={'flex'} flexDirection={'column'} alignItems={'center'}>
+                <Image width={'100%'} height={250} objectFit={'cover'} src={user.pic} alt={user.name} />
+              <Box padding={3}  alignSelf={'flex-start'} >
+                <Text fontSize={23} as={'b'}>{user.name}</Text>
+                <Text fontSize={20}  >
+                   {user.email}
                 </Text>
               </Box>
-            </Flex>
+              </Box>
+           
           </ModalBody>
           <ModalFooter>
             <Button onClick={onClose}>Close</Button>

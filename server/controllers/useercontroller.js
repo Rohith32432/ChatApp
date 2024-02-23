@@ -54,7 +54,7 @@ const registerUser = async (req, res) => {
 
   
     if (user) {
-      createmail()
+      // createmail()
         res.status(201).json({
             _id: user._id,
             name: user.name,

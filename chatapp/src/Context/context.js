@@ -8,7 +8,7 @@ const ChatProvider = ({ children }) => {
   const [user, setUser] = useState();
   const [notification, setNotification] = useState([]);
   const [chats, setChats] = useState();
-  const [categry,setcategory]=useState(false)
+  const [categry,setcategory]=useState(true)
   const history = useNavigate();
 
   useEffect(() => {
