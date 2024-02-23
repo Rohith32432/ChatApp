@@ -1,6 +1,7 @@
 import { Button } from "@chakra-ui/button";
 import { useDisclosure } from "@chakra-ui/hooks";
 import { Input } from "@chakra-ui/input";
+import { Stack } from "@chakra-ui/react";
 import { Box, Text } from "@chakra-ui/layout";
 import {
   Menu,
@@ -16,6 +17,7 @@ import {
   DrawerHeader,
   DrawerOverlay,
 } from "@chakra-ui/modal";
+import { IoIosLogOut } from "react-icons/io";
 import { FaAngleDown, FaBell, FaSearch } from "react-icons/fa";
 import { Tooltip } from "@chakra-ui/tooltip";
 import { Avatar } from "@chakra-ui/avatar";
@@ -30,6 +32,8 @@ import { ChatState } from "../../Context/context";
 import { getSender } from "../../useful/chatlogic";
 import NotificationBadge from "react-notification-badge/lib/components/NotificationBadge";
 import { Effect } from "react-notification-badge";
+import { HiUserGroup } from "react-icons/hi2";
+import { PiChatsFill } from "react-icons/pi";
 
 function SideDrawer() {
   const [search, setSearch] = useState("");
@@ -126,24 +130,35 @@ function SideDrawer() {
       <Box
         display="flex"
         justifyContent="space-between"
+        flexDirection={{base:'row',lg:'column'}}
+        padding={1}
         alignItems="center"
-        bg="white"
-        p="10px"
-        borderWidth="1px"
-        borderBottomWidth="5px"
+        bg="white" 
+        overflow={'hidden'}
       >
-        <Tooltip label="Search Users to chat" hasArrow placement="bottom-end">
+        <Box display={'flex'}  flexDirection={{base:'row',lg:'column'}} justifyContent={'space-between'}
+        gap={5}
+        >     
+          
+            <Tooltip label="Search Users to chat" hasArrow placement="bottom-end">
           <Button variant="ghost" onClick={onOpen} display="flex" alignItems="center">
             <FaSearch />
-            <Text d={{ base: "none", md: "inline-block" }} ml="2">
+            <Text display={{ base: "none", md: "inline-block"  ,lg:"none"}} ml="2">
               Search User
             </Text>
           </Button>
         </Tooltip>
-        <Text fontSize="2xl" fontFamily="Work sans">
-          Talk-A-Tive
-        </Text>
-        <Box display={'flex'}>
+       
+       
+      <Button variant={'ghost'} isActive={true}><PiChatsFill fontSize={30}/></Button>
+      <Button variant={'ghost'}><HiUserGroup  fontSize={30} /></Button>
+        
+        </Box>
+        <Box display={'flex'}   
+         flexDirection={{base:'row',lg:'column'}}
+        alignItems={'center'}
+        gap={3}
+        >
         <Menu>
           <MenuButton fontSize={'xl'}>
             <NotificationBadge
@@ -170,18 +185,17 @@ function SideDrawer() {
             ))}
           </MenuList>
         </Menu>
+       
         <Menu>
-          <MenuButton as={Button} bg="white" rightIcon={<FaAngleDown />} display="flex" alignItems="center">
-            <Avatar size="sm" cursor="pointer" name={user.name} src={user.pic} />
-          </MenuButton>
-          <MenuList>
             <ProfileModal user={user}>
-              <MenuItem>My Profile</MenuItem>
+              <> <Avatar size="sm" cursor="pointer" name={user.name} src={user.pic} /></>
             </ProfileModal>
-            <MenuDivider />
-            <MenuItem onClick={logoutHandler}>Logout</MenuItem>
-          </MenuList>
+        
+            <Button _hover={{color:'red'}} variant="ghost" cursor={'pointer'} onClick={logoutHandler} fontSize={26}  ><IoIosLogOut  strokeWidth={15} /></Button>
+           
+         
         </Menu>
+       
       </Box>
       </Box>
       <Drawer placement="left" onClose={onClose} isOpen={isOpen}>
