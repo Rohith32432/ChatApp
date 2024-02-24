@@ -22,7 +22,7 @@ import UserBadgeItem from "./BadgeItem";
 import UserListItem from "../miscellaneous/Avatar/UserListItem";
 import { IoEye } from "react-icons/io5";
 
-const UpdateGroupChatModal = ({  fetchAgain, setFetchAgain,fetchMessages }) => {
+const UpdateGroupChatModal = ({  fetchAgain, setFetchAgain,fetchMessages,children }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [groupChatName, setGroupChatName] = useState();
   const [search, setSearch] = useState("");
@@ -210,8 +210,11 @@ const UpdateGroupChatModal = ({  fetchAgain, setFetchAgain,fetchMessages }) => {
 
   return (
     <>
-      <IconButton d={{ base: "flex" }} icon={<IoEye />} onClick={onOpen} />
-
+      {children ? (
+        <span onClick={onOpen}>{children}</span>
+      ) : (
+        <IconButton d={{ base: "flex" }} icon={<IoEye />} onClick={onOpen} />
+      )}
       <Modal onClose={onClose} isOpen={isOpen} isCentered>
         <ModalOverlay />
         <ModalContent>

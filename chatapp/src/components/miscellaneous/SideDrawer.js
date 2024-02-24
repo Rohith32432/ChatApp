@@ -133,6 +133,7 @@ function SideDrawer() {
         flexDirection={{sm:'row',lg:'column'}}
         padding={1}
         margin={{base:2, lg:'15px 0px'}}
+        
         alignItems="center"
         bg="white" 
         overflow={'hidden'}
@@ -161,7 +162,7 @@ function SideDrawer() {
         gap={3}
         >
         <Menu>
-          <MenuButton fontSize={'xl'}>
+          <MenuButton fontSize={'xl'} marginBottom={{lg:5}} >
             <NotificationBadge
               count={notification.length}
               effect={Effect.SCALE}
@@ -169,7 +170,7 @@ function SideDrawer() {
             />
             <FaBell fontSize="2xl" />
           </MenuButton>
-          <MenuList>
+          <MenuList >
             {!notification.length && <MenuItem>No New Messages</MenuItem>}
             {notification.map((notif) => (
               <MenuItem

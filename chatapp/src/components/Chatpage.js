@@ -13,7 +13,7 @@ const Chatpage = () => {
     <div style={{ width: "100%" }}>
       <Box
         display={'flex'}
-        flexDirection={{ lg: 'row', sm: 'column' }}
+        flexDirection={{ lg: 'row', base:'column'}}
         gap={1}
       >      {user && <SideDrawer />}
         <Box display="flex"
