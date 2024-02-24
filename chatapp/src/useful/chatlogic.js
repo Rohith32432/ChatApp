@@ -7,16 +7,16 @@ export const getpic=(loggeduser,users)=>{
      return users[0]._id===loggeduser._id?users[1].pic:users[0].pic
 }
 export const filteruser = (name, chart) => {
-     let userNames=[]
-     const filteredChats = chart.forEach((e) => {
-           userNames  = e.users.map((user) => user.name.toLowerCase());
-          
-     });
-     console.log(userNames);
-   
-     return filteredChats;
-   };
-   
+     const copy=chart
+     let userNames = copy
+         .filter((chat) => {
+             const user = chat.users[1].name.toLowerCase(); // Get the name of the second user in the chat
+             return user.includes(name); // Check if the name includes the input value
+         })
+         .map((chat) => chat); // Extract the name of the second user from filtered chats
+     return userNames; // Return the array of user names
+ };
+ 
 export const getSenderFull = (loggedUser, users) => {
      return users[0]._id === loggedUser._id ? users[1] : users[0];
 };

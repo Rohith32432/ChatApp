@@ -48,7 +48,11 @@ const MyChats = ({ fetchAgain }) => {
 
   const search = (e) => {
     const name = e.target.value
-    filteruser(name,chats)
+     let data= filteruser(name,chats)
+    // console.log(data)
+    // if(name===' ') 
+    //     setChats()
+      setChats(data)
 
   };
   

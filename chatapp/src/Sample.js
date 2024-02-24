@@ -1,17 +1,24 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Container, Flex, IconButton, Square } from '@chakra-ui/react';
 import { FaSearchengin } from 'react-icons/fa';
 import { AspectRatio, Image } from '@chakra-ui/react';
 import { Heading, useColorMode, useColorModeValue, Box, Button } from '@chakra-ui/react';
+import EmojiPicker from 'emoji-picker-react';
 
+// import {}
 function Sample() {
   const { toggleColorMode } = useColorMode();
 
   const bg = useColorModeValue('red.500', 'red.200');
   const colors = useColorModeValue('white', 'gray.800');
+  const [chosenEmoji, setChosenEmoji] = useState(null);
 
+  const handleEmojiClick = (event, emojiObject) => {
+    setChosenEmoji(emojiObject);
+  };
   return (
     <div>
+      <EmojiPicker/>
       Sample
       <Heading size={'4xl'} color={colors}>
         Rohith
