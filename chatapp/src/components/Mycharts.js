@@ -3,7 +3,7 @@ import { Box, Stack, Text } from "@chakra-ui/layout";
 import { useToast } from "@chakra-ui/toast";
 import axios from "axios";
 import { useEffect, useRef, useState } from "react";
-import { filteruser, getSender, getpic } from "../useful/chatlogic";
+import {  getSender, getpic } from "../useful/chatlogic";
 import ChatLoading from "./Loading";
 import { Button, Image, Circle,Center, Input } from "@chakra-ui/react";
 import { ChatState } from "../Context/context";
@@ -49,7 +49,16 @@ const MyChats = ({ fetchAgain }) => {
   
 
   const search = (e) => {
-   
+    const name = e.target.value.toLowerCase(); 
+    const chatList = sample.current.childNodes; 
+ chatList.forEach(chatItem => {
+        const chatName = chatItem.childNodes[1].childNodes[0].textContent.toLowerCase(); 
+          if (chatName.includes(name)) {
+            chatItem.style.display = 'flex';
+        } else {
+            chatItem.style.display = 'none';
+        }
+    });
 };
 
 ///date
@@ -58,7 +67,7 @@ const gendate=(cdate)=>{
 const dateString = cdate;
 const dateTime = new Date(dateString);
 const fstring=dateTime.toTimeString().split(' ')[0]
-return fstring.split(':').slice(0,2).join(':')
+return fstring.split(':').slice(0,2).join()
 }
 
   
@@ -165,7 +174,7 @@ return fstring.split(':').slice(0,2).join(':')
 
                 {chat.latestMessage && (
                     
-                  <Text  position={'absolute'} top={1} margin={1} right={5} >
+                  <Text  position={'absolute'} top={1} margin={1} right={5}>
                        {
                          gendate(chat.latestMessage.createdAt)
                        }
