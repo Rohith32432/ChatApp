@@ -49,6 +49,7 @@ const MyChats = ({ fetchAgain }) => {
   
 
   const search = (e) => {
+<<<<<<< HEAD
     const name = e.target.value.toLowerCase(); 
     const chatList = sample.current.childNodes; 
  chatList.forEach(chatItem => {
@@ -69,6 +70,14 @@ const dateTime = new Date(dateString);
 const fstring=dateTime.toTimeString().split(' ')[0]
 return fstring.split(':').slice(0,2).join(':')
 }
+=======
+    const name = e.target.value
+     let data= filteruser(name,chats)
+    // console.log(data)
+    // if(name===' ') 
+    //     setChats()
+      setChats(data)
+>>>>>>> 23a8fa8c79254c72cb64b15af1d2e2e3f376a395
 
   
   useEffect(() => {

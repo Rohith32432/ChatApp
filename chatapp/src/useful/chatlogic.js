@@ -7,6 +7,7 @@ export const getpic=(loggeduser,users)=>{
      return users[0]._id===loggeduser._id?users[1].pic:users[0].pic
 }
 export const filteruser = (name, chart) => {
+<<<<<<< HEAD
      let userNames = chart
          .filter((chat) => {
              const user = chat.users[1].name.toLowerCase();
@@ -14,6 +15,16 @@ export const filteruser = (name, chart) => {
          })
          .map((chat) => chat); 
      return userNames;
+=======
+     const copy=chart
+     let userNames = copy
+         .filter((chat) => {
+             const user = chat.users[1].name.toLowerCase(); // Get the name of the second user in the chat
+             return user.includes(name); // Check if the name includes the input value
+         })
+         .map((chat) => chat); // Extract the name of the second user from filtered chats
+     return userNames; // Return the array of user names
+>>>>>>> 23a8fa8c79254c72cb64b15af1d2e2e3f376a395
  };
  
 export const getSenderFull = (loggedUser, users) => {
