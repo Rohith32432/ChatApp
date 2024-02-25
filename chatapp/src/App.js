@@ -5,6 +5,7 @@ import Home from './components/Home';
 import Sample from './Sample';
 import ChatProvider from './Context/context';
 function App() {
+
   return (
     <div className="App">
     {/* <Sample/> */}

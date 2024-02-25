@@ -14,7 +14,7 @@ const Login = () => {
   const [loading, setLoading] = useState(false);
   const toast = useToast();
   const history = useNavigate();
-
+  const url=process.env.REACT_APP_API_URL
   const handleClick = () => setShow(!show);
 
   const submitHandler = async () => {
@@ -39,7 +39,7 @@ const Login = () => {
         },
       };
       const { data } = await axios.post(
-        "http://localhost:2021/api/user/login",
+        `${url}/api/user/login`,
         { email, password },
         config
       );

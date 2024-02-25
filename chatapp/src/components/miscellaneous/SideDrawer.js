@@ -39,7 +39,7 @@ function SideDrawer() {
   const [searchResult, setSearchResult] = useState([]);
   const [loading, setLoading] = useState(false);
   const [loadingChat, setLoadingChat] = useState(false);
-
+  const url=process.env.REACT_APP_API_URL
   const {
     setSelectedChat,
     user,
@@ -70,7 +70,7 @@ function SideDrawer() {
         },
       };
 
-      const { data } = await axios.get(`http://localhost:2021/api/user?search=${search}`, config);
+      const { data } = await axios.get(`${url}/api/user?search=${search}`, config);
       console.log(data);
       setLoading(false);
       setSearchResult(data);
@@ -97,7 +97,7 @@ function SideDrawer() {
           Authorization: `Bearer ${user.token}`,
         },
       };
-      const { data } = await axios.post(`http://localhost:2021/api/chat`, { userId }, config);
+      const { data } = await axios.post(`${url}/api/chat`, { userId }, config);
       console.log(data);
       if (!chats.find((c) => c._id === data._id)) setChats([data, ...chats]);
       setSelectedChat(data);

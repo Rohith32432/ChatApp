@@ -16,7 +16,7 @@ const MyChats = ({ fetchAgain }) => {
   const { selectedChat, setSelectedChat, user, chats, setChats,categry } = ChatState();
   const sample=useRef(null)
   const toast = useToast();
-
+  const url=process.env.REACT_APP_API_URL
   const fetchChats = async () => {
     // //console.log(user._id);
     try {
@@ -25,8 +25,8 @@ const MyChats = ({ fetchAgain }) => {
           Authorization: `Bearer ${user.token}`,
         },
       };
-
-      const { data } = await axios.get("http://localhost:2021/api/chat", config);
+      
+      const { data } = await axios.get(`${url}/api/chat`, config);
 
       setChats(data);
       // //console.log(data.filter((e)=>e.isGroupChat===true));

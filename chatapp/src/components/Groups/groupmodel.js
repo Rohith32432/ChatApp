@@ -28,7 +28,7 @@ const GroupChatModal = ({ children }) => {
     const [searchResult, setSearchResult] = useState([]);
     const [loading, setLoading] = useState(false);
     const toast = useToast();
-
+    const url=process.env.REACT_APP_API_URL
     const { user, chats, setChats } = ChatState();
 
     const handleGroup = (userToAdd) => {
@@ -59,7 +59,7 @@ const GroupChatModal = ({ children }) => {
                     Authorization: `Bearer ${user.token}`,
                 },
             };
-            const { data } = await axios.get(`http://localhost:2021/api/user?search=${search}`, config);
+            const { data } = await axios.get(`${url}/api/user?search=${search}`, config);
             console.log(data);
             setLoading(false);
             setSearchResult(data);
@@ -97,7 +97,7 @@ const GroupChatModal = ({ children }) => {
                 },
             };
             const { data } = await axios.post(
-                `http://localhost:2021/api/chat/group`,
+                `${url}/api/chat/group`,
                 {
                     name: groupChatName,
                     users: JSON.stringify(selectedUsers.map((u) => u._id)),
