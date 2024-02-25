@@ -59,18 +59,8 @@ function SideDrawer() {
     history("/");
   };
 
-  const handleSearch = async () => {
-    if (!search) {
-      toast({
-        title: "Please Enter something in search",
-        status: "warning",
-        duration: 5000,
-        isClosable: true,
-        position: "top-left",
-      });
-      return;
-    }
-
+  const handleSearch = async (str) => {
+      setSearch(str)
     try {
       setLoading(true);
 
@@ -205,14 +195,14 @@ function SideDrawer() {
         <DrawerContent>
           <DrawerHeader borderBottomWidth="1px">Search Users</DrawerHeader>
           <DrawerBody>
-            <Box d="flex" pb={2}>
+            <Box display="flex" pb={2}>
               <Input
                 placeholder="Search by name or email"
                 mr={2}
                 value={search}
-                onChange={(e) => setSearch(e.target.value)}
+                onChange={(e)=>{handleSearch(e.target.value)}}
               />
-              <Button onClick={handleSearch}>Go</Button>
+              <Button colorScheme="green" onClick={()=>{handleSearch('')}}>ViewAll</Button>
             </Box>
             {loading ? (
               <Spinner />

@@ -133,7 +133,7 @@ return fstring.split(':').slice(0,2).join(":")
               <Box
                 onClick={() => setSelectedChat(chat)}
                 cursor="pointer"
-                bg={selectedChat === chat ? "#38B2AC" : "#E8E8E8"}
+                bg={selectedChat === chat ? "#4ebf7c" : "#E8E8E8"}
                 color={selectedChat === chat ? "white" : "black"}
                 borderRadius="lg"
                 p={1}
