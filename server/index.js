@@ -7,18 +7,19 @@ const { registerUser } = require('./controllers/useercontroller');
 const userrouter = require('./routes/userRoutes');
 const chatRoutes = require('./routes/chatroutes');
 const msgroutes = require('./routes/messagerouter');
+const path=require('path')
 app.use(cors())
 app.use(express.json())
 main().catch(err => console.log(err));
 
 async function main() {
-  await mongoose.connect(process.env.mongo_url);
+  const url= String( process.env.mongo_url,)
+  // console.log(url);
+  await mongoose.connect(url);
   console.log('DB Connected successfully ');
 }
 
-app.get('/', (req, res) => {
-  res.send('welcome')
-})
+
 app.use('/api/user', userrouter)
 app.use("/api/chat", chatRoutes);
 app.use('/api/messages', msgroutes)
@@ -26,9 +27,26 @@ const port=process.env.port||5000
 const server=  app.listen(port, () => {
   console.log(`conteted to port ${port}` );
 })
+
+//-------------------------------------//
+const __dirname1 = path.resolve('..');
+console.log(__dirname1);
+
+
+if (process.env.NODE_ENV === "production") {
+  app.use(express.static(path.join(__dirname1, "/chatapp/build")));
+
+  app.get("*", (req, res) =>
+    res.sendFile(path.resolve(__dirname1, "chatapp", "build", "index.html"))
+  );
+} else {
+  app.get("/", (req, res) => {
+    res.send("API is running..");
+  });
+}
+
+//------------------------//
  
-
-
 const io = require("socket.io")(server, {
   pingTimeout: 60000,
   cors: {
