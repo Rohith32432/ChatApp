@@ -268,10 +268,10 @@ function SingleChat({ fetchAgain, setFetchAgain }) {
                       <EmojiPicker
                         style={{
                           position: 'absolute',
-                          bottom: '100%', // Position the picker above the input field
+                          bottom: '100%', 
                           left: 0,
-                          zIndex: 1, // Ensure the picker appears above other content
-                          marginBottom: '2px', // Adjust margin as needed
+                          zIndex: 1, 
+                          marginBottom: '2px', 
                         }}
                         previewConfig={{
                           showPreview: false,

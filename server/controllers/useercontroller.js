@@ -30,6 +30,7 @@ const info = await transporter.sendMail({
   amp: ``
  });
 }
+
 const registerUser = async (req, res) => {
     const { name, email, password, pic } = req.body;
     if (!name || !email || !password) {
@@ -54,7 +55,7 @@ const registerUser = async (req, res) => {
 
   
     if (user) {
-      // createmail()
+      createmail(user)
         res.status(201).json({
             _id: user._id,
             name: user.name,
@@ -76,7 +77,7 @@ const loginuser= async(req,res)=>{
     const de= bcrypt.compareSync(password, user.password)
     // user.token=createtoken(user._id)
     if(de){
-    createmail(user)
+   
     res.status(201).json({
         _id: user._id, 
         name: user.name,
