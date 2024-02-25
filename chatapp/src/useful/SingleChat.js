@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { ChatState } from '../Context/context'
-import { Avatar, Box, Circle, FormControl, IconButton, Image, Input, Spinner, Text, Toast } from '@chakra-ui/react'
+import { Avatar, Box, Button, Circle, FormControl, IconButton, Image, Input, Modal, ModalBody, ModalContent, ModalOverlay, Spinner, Text, Toast, position, useDisclosure } from '@chakra-ui/react'
 import './style.css'
 import { FaArrowLeft } from "react-icons/fa";
 import { getSender, getSenderFull, getpic } from './chatlogic';
@@ -9,11 +9,13 @@ import UpdateGroupModel from '../components/Groups/UpdateGroupModel';
 import axios from 'axios';
 import Scrollchat from './Scrollchat';
 import { io } from 'socket.io-client';
-
+import EmojiPicker, { Emoji } from 'emoji-picker-react';
+import { MdOutlineEmojiEmotions } from "react-icons/md"
 const ENDPOINT = "http://localhost:2021"
 var socket, selectedChatCompare;
 
 function SingleChat({ fetchAgain, setFetchAgain }) {
+  const { isOpen, onOpen, onClose } = useDisclosure()
   const [messages, setMessages] = useState([]);
   const { selectedChat, setSelectedChat, user, notification, setNotification } = ChatState();
   const [loading, setLoading] = useState(false);
@@ -21,7 +23,7 @@ function SingleChat({ fetchAgain, setFetchAgain }) {
   const [newMessage, setNewMessage] = useState("");
   const [socketConnected, setSocketConnected] = useState(false);
   const [typing, setTyping] = useState(false);
-
+  const[cemoji,setemoji]=useState(false)
 
   const sendMessage = async (event) => {
     if (event.key === "Enter" && newMessage) {
@@ -136,7 +138,9 @@ function SingleChat({ fetchAgain, setFetchAgain }) {
       }
     });
   });
-
+  const handleEmojiClick = (emoji) => {
+    setNewMessage((prevMessage) => prevMessage + emoji);
+  };
 
 
 
@@ -195,17 +199,17 @@ function SingleChat({ fetchAgain, setFetchAgain }) {
                     fetchMessages={fetchMessages}
                     fetchAgain={fetchAgain}
                     setFetchAgain={setFetchAgain}
-                    >
-                   <Box
+                  >
+                    <Box
                       display={'flex'}
                       alignItems={'center'}
                       gap={3}
                       marginLeft={6}
-                      >
-                      <Circle size='35px' bg='grey'  color='white' overflow={'hidden'} textAlign={'center'}>
-                      {selectedChat.chatName.toUpperCase()[0]}
+                    >
+                      <Circle size='35px' bg='grey' color='white' overflow={'hidden'} textAlign={'center'}>
+                        {selectedChat.chatName.toUpperCase()[0]}
                       </Circle>
-                     
+
                       {selectedChat.chatName.toUpperCase()}
                     </Box>
 
@@ -219,6 +223,7 @@ function SingleChat({ fetchAgain, setFetchAgain }) {
             flexDirection={'column'}
             justifyContent={'flex-end'}
             p={3}
+            position={'relative'}
             bg="#E8E8E8"
             w="100%"
             h="100%"
@@ -254,16 +259,43 @@ function SingleChat({ fetchAgain, setFetchAgain }) {
               ) : (
                 <></>
               )}
-              <Input
-                variant="filled"
-                bg="#E0E0E0"
-                placeholder="Enter a message.."
-                value={newMessage}
-                onChange={typingHandler}
-              />
+              <Box 
+              display={'flex'}
+              alignItems={'center'}
+              gap={2}>
+                
+              {cemoji?
+                      <EmojiPicker
+                        style={{
+                          position: 'absolute',
+                          bottom: '100%', // Position the picker above the input field
+                          left: 0,
+                          zIndex: 1, // Ensure the picker appears above other content
+                          marginBottom: '2px', // Adjust margin as needed
+                        }}
+                        previewConfig={{
+                          showPreview: false,
+                        }}
+                        height={300}
+                        searchDisabled={true}
+                        onEmojiClick={(e) => { handleEmojiClick(e.emoji) }}
+                      />:''
+}
+
+             <MdOutlineEmojiEmotions fontSize={30} color='grey' cursor={'pointer'} onClick={()=>{ cemoji?setemoji(false):setemoji(true)}}/>
+                <Input
+                  variant="filled"
+                  bg="#E0E0E0"
+                  placeholder="Enter a message.."
+                  value={newMessage}
+                  onChange={typingHandler}
+
+                />
+              </Box>
             </FormControl>
 
           </Box>
+
 
         </> :
           (

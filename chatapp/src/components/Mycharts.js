@@ -67,7 +67,7 @@ const gendate=(cdate)=>{
 const dateString = cdate;
 const dateTime = new Date(dateString);
 const fstring=dateTime.toTimeString().split(' ')[0]
-return fstring.split(':').slice(0,2).join()
+return fstring.split(':').slice(0,2).join(":")
 }
 
   

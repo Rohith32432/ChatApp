@@ -138,8 +138,8 @@ function SideDrawer() {
         bg="white" 
         overflow={'hidden'}
       >
-        <Box display={'flex'}  flexDirection={{base:'row',lg:'column'}} justifyContent={'space-between'}
-        gap={5}
+        <Box display={'flex'}  flexDirection={{base:'row',lg:'column'}} justifyContent={{base:'space-between'}}
+        gap={{base:5}}
         >     
           
             <Tooltip label="Search Users to chat" hasArrow placement="bottom-end">
