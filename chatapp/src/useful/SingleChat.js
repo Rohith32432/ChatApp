@@ -11,7 +11,8 @@ import Scrollchat from './Scrollchat';
 import { io } from 'socket.io-client';
 import EmojiPicker, { Emoji } from 'emoji-picker-react';
 import { MdOutlineEmojiEmotions } from "react-icons/md"
-const ENDPOINT = "http://localhost:2021"
+const url=process.env.REACT_APP_API_URL
+const ENDPOINT = `${url}`
 var socket, selectedChatCompare;
 
 function SingleChat({ fetchAgain, setFetchAgain }) {
@@ -37,7 +38,7 @@ function SingleChat({ fetchAgain, setFetchAgain }) {
         };
         setNewMessage(" ")
         const { data } = await axios.post(
-          "http://localhost:2021/api/messages",
+          `${url}/api/messages`,
           {
             content: newMessage,
             chatId: selectedChat,
@@ -72,7 +73,7 @@ function SingleChat({ fetchAgain, setFetchAgain }) {
       setLoading(true);
 
       const { data } = await axios.get(
-        `http://localhost:2021/api/messages/${selectedChat._id}`,
+        `${url}/api/messages/${selectedChat._id}`,
         config
       );
       console.log(data);

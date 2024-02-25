@@ -13,7 +13,7 @@ const Signup = () => {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const toast = useToast();
   const history = useNavigate();
-
+  const url=process.env.REACT_APP_API_URL
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [confirmpassword, setConfirmpassword] = useState('');
