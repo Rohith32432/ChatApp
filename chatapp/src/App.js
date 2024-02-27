@@ -2,7 +2,6 @@ import './App.css';
 import { Route, Routes } from 'react-router-dom';
 import Chatpage from './components/Chatpage';
 import Home from './components/Home';
-import Sample from './Sample';
 import ChatProvider from './Context/context';
 function App() {
 
