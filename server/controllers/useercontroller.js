@@ -39,10 +39,8 @@ const registerUser = async (req, res) => {
     }
 
     const userExists = await User.findOne({ email });
-
-    if (userExists) {
-        res.status(400);
-        res.send('already exists')
+    if (userExists) { 
+       return  res.status(400).json({message:"user already exists"})
     }
    
     const hashedPassword = bcrypt.hashSync(password.toString(), 10);
@@ -73,7 +71,7 @@ const registerUser = async (req, res) => {
 const loginuser= async(req,res)=>{
     const {email,password}=req.body
     const user=await User.findOne({email: email})
-   
+   if(user) {
     const de= bcrypt.compareSync(password, user.password)
     // user.token=createtoken(user._id)
     if(de){
@@ -86,7 +84,9 @@ const loginuser= async(req,res)=>{
         pic: user.pic,
         token: createtoken(user._id),
       });}
-    else res.send('error')
+    else res.status(404).json({message:'Password is Incorrect'}) 
+  }
+  else res.status(404).send({message:"Register to Login"})
 }
 
 

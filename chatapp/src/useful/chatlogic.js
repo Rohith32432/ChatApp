@@ -4,7 +4,8 @@ export const getSender = (loggedUser, users) => {
 
 };
 export const getpic=(loggeduser,users)=>{
-     return users[0]._id===loggeduser._id?users[1].pic:users[0].pic
+     if(loggeduser)
+          return users[0]._id===loggeduser._id?users[1].pic:users[0].pic
 }
 export const filteruser = (name, chart) => {
      let userNames = chart

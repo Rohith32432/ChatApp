@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import { ChatState } from '../Context/context'
-import { Avatar, Box, Button, Circle, FormControl, IconButton, Image, Input, Modal, ModalBody, ModalContent, ModalOverlay, Spinner, Text, Toast, position, useDisclosure } from '@chakra-ui/react'
+import {  Box,  Circle, FormControl, IconButton, Image, Input,    Spinner, Text, Toast, useDisclosure } from '@chakra-ui/react'
 import './style.css'
 import { FaArrowLeft } from "react-icons/fa";
-import { getSender, getSenderFull, getpic } from './chatlogic';
+import { getSender, getSenderFull } from './chatlogic';
 import ProfileModal from '../components/miscellaneous/ProfileModal';
 import UpdateGroupModel from '../components/Groups/UpdateGroupModel';
 import axios from 'axios';
@@ -283,7 +283,7 @@ function SingleChat({ fetchAgain, setFetchAgain }) {
                       />:''
 }
 
-             <MdOutlineEmojiEmotions fontSize={30} color='grey' cursor={'pointer'} onClick={()=>{ cemoji?setemoji(false):setemoji(true)}}/>
+             <MdOutlineEmojiEmotions fontSize={30} color='grey' cursor={'pointer'} onMouseEnter={()=>{ setemoji(true)} } onMouseLeave={()=>{setemoji(false)}}/>
                 <Input
                   variant="filled"
                   bg="#E0E0E0"

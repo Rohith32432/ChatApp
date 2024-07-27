@@ -38,12 +38,13 @@ const Login = () => {
           "Content-type": "application/json",
         },
       };
-      const { data } = await axios.post(
+      const { data ,status} = await axios.post(
         `${url}/api/user/login`,
         { email, password },
         config
       );
-
+console.log(data);
+if(status==201){
       localStorage.setItem("userInfo", JSON.stringify(data));
       toast({
         title: "Login Successful",
@@ -54,7 +55,9 @@ const Login = () => {
       });
       setLoading(false);
       history("/chats");
+    }
     } catch (error) {
+      console.log(error);
       toast({
         title: "Error Occurred!",
         description: error.response?.data.message || "An unexpected error occurred.",

@@ -1,4 +1,3 @@
-import { IoMdAdd } from "react-icons/io";
 import { Box, Stack, Text } from "@chakra-ui/layout";
 import { useToast } from "@chakra-ui/toast";
 import axios from "axios";
@@ -22,12 +21,12 @@ const MyChats = ({ fetchAgain }) => {
     try {
       const config = {
         headers: {
-          Authorization: `Bearer ${user.token}`,
+          Authorization: `Bearer ${  user.token}`,
         },
       };
       
       const { data } = await axios.get(`${url}/api/chat`, config);
-
+      data &&
       setChats(data);
       // //console.log(data.filter((e)=>e.isGroupChat===true));
       categry? setChats(data):setChats(
@@ -96,7 +95,7 @@ return fstring.split(':').slice(0,2).join(":")
       >     
            <Groupmodel >
         <Tooltip label="create Group" bg={'green'} padding={2} borderRadius={10} hasArrow placement="bottom-end">
-        <Button padding={5} _hover={{bg:'lightgreen'}} position={'sticky'}>
+        <Button padding={5} _hover={{bg:'lightgreen'}}  zIndex={999} position={'sticky'}>
             <MdGroupAdd fontSize={20}/>
             </Button>
           </Tooltip>
@@ -124,7 +123,7 @@ return fstring.split(':').slice(0,2).join(":")
         p={3}
         h="100%"
         width={'100%'}
-       
+       overflowY={'scroll'}
         borderRadius="lg"
       >
         {chats ? (
@@ -148,7 +147,7 @@ return fstring.split(':').slice(0,2).join(":")
                   { 
                    !chat.isGroupChat ?
                   <Image src={getpic(loggedUser, chat.users)
-                  } alt="naruto"
+                  } alt="PIC"
                     height={'100%'}
                     objectFit={'cover'}
                   />: 
