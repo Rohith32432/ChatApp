@@ -18,7 +18,7 @@ async function main() {
   await mongoose.connect(url);
   console.log('DB Connected successfully ');
 }
-
+ 
 
 app.use('/api/user', userrouter)
 app.use("/api/chat", chatRoutes);
