@@ -28,9 +28,9 @@ import { Spinner } from "@chakra-ui/spinner";
 import ProfileModal from "./ProfileModal";
 import UserListItem from "./Avatar/UserListItem";
 import { ChatState } from "../../Context/context";
-import { getSender } from "../../useful/chatlogic";
-import NotificationBadge from "react-notification-badge/lib/components/NotificationBadge";
-import { Effect } from "react-notification-badge";
+// import { getSender } from "../../useful/chatlogic";
+// import NotificationBadge from "react-notification-badge/lib/components/NotificationBadge";
+// import { Effect } from "react-notification-badge";
 import { HiUserGroup } from "react-icons/hi2";
 import { PiChatsFill } from "react-icons/pi";
 
@@ -153,15 +153,15 @@ function SideDrawer() {
         >
         <Menu>
           <MenuButton fontSize={'xl'} marginBottom={{lg:5}} >
-            <NotificationBadge
+            {/* <NotificationBadge
               count={notification.length}
               effect={Effect.SCALE}
               style={{ marginRight: '8px' }}
-            />
+            /> */}
             <FaBell fontSize="2xl" />
           </MenuButton>
           <MenuList >
-            {!notification.length && <MenuItem>No New Messages</MenuItem>}
+            {/* {!notification.length && <MenuItem>No New Messages</MenuItem>}
             {notification.map((notif) => (
               <MenuItem
                 key={notif._id}
@@ -174,7 +174,8 @@ function SideDrawer() {
                   ? `New Message in ${notif.chat.chatName}`
                   : `New Message from ${getSender(user, notif.chat.users)}`}
               </MenuItem>
-            ))}
+            ))} */}
+            <MenuItem>No New Messages</MenuItem>
           </MenuList>
         </Menu>
        
