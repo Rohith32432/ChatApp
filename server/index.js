@@ -19,6 +19,9 @@ async function main() {
   console.log('DB Connected successfully ');
 }
  
+app.get("/", (req, res) => {
+  res.send("API is running..");
+});
 
 app.use('/api/user', userrouter)
 app.use("/api/chat", chatRoutes);
