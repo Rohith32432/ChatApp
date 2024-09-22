@@ -13,7 +13,7 @@ app.use(express.json())
 main().catch(err => console.log(err));
 
 async function main() {
-  const url= String( process.env.mongo_url,)
+  const url= String( process.env.mongo_url)
   // console.log(url);
   await mongoose.connect(url);
   console.log('DB Connected successfully ');
