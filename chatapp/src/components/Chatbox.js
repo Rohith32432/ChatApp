@@ -14,6 +14,9 @@ function Chatbox({fetchAgain,setFetchAgain}) {
       padding={3}
       backgroundColor="white"
       width={{ base: "100%", md: "68%" }}
+
+      flex={1}
+      overflow={'hidden'}
       borderRadius="lg"
       borderWidth="1px"
     >

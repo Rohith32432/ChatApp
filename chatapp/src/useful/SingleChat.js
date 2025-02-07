@@ -25,6 +25,7 @@ function SingleChat({ fetchAgain, setFetchAgain }) {
   const [socketConnected, setSocketConnected] = useState(false);
   const [typing, setTyping] = useState(false);
   const[cemoji,setemoji]=useState(false)
+  const [botmsg,setbotmsg]=useState([])
 
   const sendMessage = async (event) => {
     if (event.key === "Enter" && newMessage) {
@@ -60,9 +61,52 @@ function SingleChat({ fetchAgain, setFetchAgain }) {
       }
     }
   };
-  const fetchMessages = async () => {
-    if (!selectedChat) return;
 
+  async function sendbotMessage(event){
+    if (event.key === "Enter" && newMessage) {
+      socket.emit("stop typing", selectedChat);
+      setIsTyping(true)
+      try {
+        const config = {
+          headers: {
+            "Content-type": "application/json",
+            Authorization: `Bearer ${user.token}`,
+          },
+        };
+        setNewMessage(" ")
+        const { data } = await axios.post(
+          `${url}/api/messages/bot`,
+          {
+            prompt: newMessage,
+            chatId: selectedChat,
+          },
+          config
+        );
+        if(data) setIsTyping(false)
+          console.log(JSON.stringify(data?.msg),data);
+          
+        socket.emit("bot message", data);
+        setbotmsg([...botmsg, data]);
+      } catch (error) {
+        Toast({
+          title: "Error Occured!",
+          description: "Failed to send the Message",
+          status: "error",
+          duration: 5000,
+          isClosable: true,
+          position: "bottom",
+        });
+      }
+      
+    }
+  }
+
+  const fetchMessages = async () => {
+    if (!selectedChat ) return;
+    if(selectedChat=='ai'){
+      socket.emit('join chat','bot')
+      return
+    }
     try {
       const config = {
         headers: {
@@ -113,7 +157,10 @@ function SingleChat({ fetchAgain, setFetchAgain }) {
       }
     }, timerLength);
   }
+  function botinputhandler(e){
+    setNewMessage(e.target.value)
 
+  }
   useEffect(() => {
     socket = io(ENDPOINT);
     socket.emit("setup", user);
@@ -133,11 +180,16 @@ function SingleChat({ fetchAgain, setFetchAgain }) {
         if (!notification.includes(newMessageRecieved)) {
           setNotification([newMessageRecieved, ...notification]);
           setFetchAgain(!fetchAgain);
+        
         }
       } else {
         setMessages([...messages, newMessageRecieved]);
+        
       }
     });
+    socket.on("bot recieved", (newMessageRecieved) => {
+        setMessages([...messages, newMessageRecieved]);
+    })
   });
   const handleEmojiClick = (emoji) => {
     setNewMessage((prevMessage) => prevMessage + emoji);
@@ -146,11 +198,117 @@ function SingleChat({ fetchAgain, setFetchAgain }) {
 
 
   useEffect(() => {
-    fetchMessages();
+      fetchMessages();
 
     selectedChatCompare = selectedChat;
     // // eslint-disable-next-line
   }, [selectedChat]);
+  if( selectedChat=='ai') return (
+    <>
+      {
+       <>
+          <Box
+            fontSize={{ base: "28px", md: "30px" }}
+            pb={3}
+            px={2}
+            w="100%"
+            display="flex"
+            cursor={'pointer'}
+            alignItems="center"
+          >
+            <IconButton
+              display={{ base: "flex", md: "none" }}
+              icon={<FaArrowLeft />}
+              onClick={() => setSelectedChat("")}
+            />
+      
+                    <Box
+                      display={'flex'}
+                      alignItems={'center'}
+                      gap={3}
+                      marginLeft={6}
+                    >
+                      <Circle size='35px' bg='grey' color='white' overflow={'hidden'} textAlign={'center'}>
+                        {
+                          <Image src='https://www.shutterstock.com/image-vector/chat-bot-icon-virtual-smart-260nw-2478849771.jpg'
+                          alt="naruto"
+                            height={'200%'}
+                            width={'200%'}
+                            objectFit={'cover'}
+                          />
+                        }
+                      </Circle>
+                      Gemini Bot
+                      {/* {getSender(user, selectedChat.users)} */}
+                    </Box>
+                 
+          </Box>
+
+          <Box
+            display={'flex'}
+            flexDirection={'column'}
+            justifyContent={'flex-end'}
+            p={3}
+            position={'relative'}
+            bg="#E8E8E8"
+            w="100%"
+            h="100%"
+            borderRadius="lg"
+            overflowY="hidden"
+          >
+            {loading ? (
+              <Spinner
+                size="xl"
+                w={20}
+                h={20}
+                alignSelf="center"
+                margin="auto"
+              />
+            ) : (
+              <div className="messages">
+                <Scrollchat messages={botmsg} type='bot' />
+              </div>
+            )}
+
+            <FormControl
+              onKeyDown={sendbotMessage}
+              id="first-name"
+              isRequired
+              mt={3}
+            >
+              {istyping ? (
+                <div>
+
+                  <Spinner />
+                  loading..
+                </div>
+              ) : (
+                <></>
+              )}
+              <Box 
+              display={'flex'}
+              alignItems={'center'}
+              gap={2}>
+                
+             <Input
+                  variant="filled"
+                  bg="#E0E0E0"
+                  placeholder="Enter a message.."
+                  value={newMessage}
+                  onChange={botinputhandler}
+
+                />
+              </Box>
+            </FormControl>
+
+          </Box>
+
+
+        </>
+      }
+
+    </>
+  )
   return (
     <>
       {

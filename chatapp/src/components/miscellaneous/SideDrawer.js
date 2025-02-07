@@ -1,7 +1,8 @@
 import { Button } from "@chakra-ui/button";
 import { useDisclosure } from "@chakra-ui/hooks";
 import { Input } from "@chakra-ui/input";
-import { Box, Text } from "@chakra-ui/layout";
+import { Box, Circle, Text } from "@chakra-ui/layout";
+
 import {
   Menu,
   MenuButton,
@@ -33,13 +34,14 @@ import { ChatState } from "../../Context/context";
 // import { Effect } from "react-notification-badge";
 import { HiUserGroup } from "react-icons/hi2";
 import { PiChatsFill } from "react-icons/pi";
+import { Image } from "@chakra-ui/react";
 
 function SideDrawer() {
   const [search, setSearch] = useState("");
   const [searchResult, setSearchResult] = useState([]);
   const [loading, setLoading] = useState(false);
   const [loadingChat, setLoadingChat] = useState(false);
-  const url=process.env.REACT_APP_API_URL
+  const url = process.env.REACT_APP_API_URL
   const {
     setSelectedChat,
     user,
@@ -47,7 +49,7 @@ function SideDrawer() {
     setNotification,
     chats,
     setChats,
-    categry,setcategory
+    categry, setcategory
   } = ChatState();
 
   const toast = useToast();
@@ -60,7 +62,7 @@ function SideDrawer() {
   };
 
   const handleSearch = async (str) => {
-      setSearch(str)
+    setSearch(str)
     try {
       setLoading(true);
 
@@ -120,48 +122,60 @@ function SideDrawer() {
       <Box
         display="flex"
         justifyContent="space-between"
-        flexDirection={{sm:'row',lg:'column'}}
+        flexDirection={{ sm: 'row', lg: 'column' }}
         padding={1}
-        margin={{base:2, lg:'15px 0px'}}
-        
+        margin={{ base: 2, lg: '15px 0px' }}
+
         alignItems="center"
-        bg="white" 
+        bg="white"
         overflow={'hidden'}
       >
-        <Box display={'flex'}  flexDirection={{base:'row',lg:'column'}} justifyContent={{base:'space-between'}}
-        gap={{base:5}}
-        >     
-          
-            <Tooltip label="Search Users to chat" hasArrow placement="bottom-end">
-          <Button variant="ghost" onClick={onOpen} display="flex" alignItems="center">
-            <FaSearch  fontSize={20} />
-            <Text display={{ base: "none", md: "inline-block"  ,lg:"none"}} ml="2">
-              Search User
-            </Text>
-          </Button>
-        </Tooltip>
-       
-       
-      <Button  variant={'ghost'} isActive={categry} onClick={()=>{setcategory(true)}}><PiChatsFill fontSize={30} color={categry?'green':''}/></Button>
-      <Button variant={'ghost'} isActive={!categry} onClick={()=>{setcategory(false)}} ><HiUserGroup  fontSize={30}  color={!categry?'green':''}/></Button>
-        
-        </Box>
-        <Box display={'flex'}   
-         flexDirection={{base:'row',lg:'column'}}
-        alignItems={'center'}
-        gap={3}
+        <Box display={'flex'} flexDirection={{ base: 'row', lg: 'column' }} justifyContent={{ base: 'space-between' }}
+          gap={{ base: 5 }}
         >
-        <Menu>
-          <MenuButton fontSize={'xl'} marginBottom={{lg:5}} >
-            {/* <NotificationBadge
+
+          <Tooltip label="Search Users to chat" hasArrow placement="bottom-end">
+            <Button variant="ghost" onClick={onOpen} display="flex" alignItems="center">
+              <FaSearch fontSize={20} />
+              <Text display={{ base: "none", md: "inline-block", lg: "none" }} ml="2">
+                Search User
+              </Text>
+            </Button>
+          </Tooltip>
+
+
+          <Button variant={'ghost'} isActive={categry} onClick={() => { setcategory(true) }}><PiChatsFill fontSize={30} color={categry ? 'green' : ''} /></Button>
+          <Button variant={'ghost'} isActive={!categry} onClick={() => { setcategory(false) }} ><HiUserGroup fontSize={30} color={!categry ? 'green' : ''} /></Button>
+        <Button variant={'ghost'} onClick={()=>{setSelectedChat('ai')}} isActive={false}>
+
+        <Circle size='35px' bg='grey' color='white' overflow={'hidden'} textAlign={'center'}>
+                        {
+                          <Image src='https://www.shutterstock.com/image-vector/chat-bot-icon-virtual-smart-260nw-2478849771.jpg'
+                          alt="naruto"
+                            height={'200%'}
+                            width={'200%'}
+                            objectFit={'cover'}
+                          />
+                        }
+                      </Circle>
+        </Button>
+        </Box>
+        <Box display={'flex'}
+          flexDirection={{ base: 'row', lg: 'column' }}
+          alignItems={'center'}
+          gap={3}
+        >
+          <Menu>
+            <MenuButton fontSize={'xl'} marginBottom={{ lg: 5 }} >
+              {/* <NotificationBadge
               count={notification.length}
               effect={Effect.SCALE}
               style={{ marginRight: '8px' }}
             /> */}
-            <FaBell fontSize="2xl" />
-          </MenuButton>
-          <MenuList >
-            {/* {!notification.length && <MenuItem>No New Messages</MenuItem>}
+              <FaBell fontSize="2xl" />
+            </MenuButton>
+            <MenuList >
+              {/* {!notification.length && <MenuItem>No New Messages</MenuItem>}
             {notification.map((notif) => (
               <MenuItem
                 key={notif._id}
@@ -175,21 +189,21 @@ function SideDrawer() {
                   : `New Message from ${getSender(user, notif.chat.users)}`}
               </MenuItem>
             ))} */}
-            <MenuItem>No New Messages</MenuItem>
-          </MenuList>
-        </Menu>
-       
-        <Menu>
+              <MenuItem>No New Messages</MenuItem>
+            </MenuList>
+          </Menu>
+
+          <Menu>
             <ProfileModal user={user}>
               <> <Avatar size="sm" cursor="pointer" name={user.name} src={user.pic} /></>
             </ProfileModal>
-        
-            <Button _hover={{color:'red'}} variant="ghost" cursor={'pointer'} onClick={logoutHandler} fontSize={26}  ><IoIosLogOut  strokeWidth={15} /></Button>
-           
-         
-        </Menu>
-       
-      </Box>
+
+            <Button _hover={{ color: 'red' }} variant="ghost" cursor={'pointer'} onClick={logoutHandler} fontSize={26}  ><IoIosLogOut strokeWidth={15} /></Button>
+
+
+          </Menu>
+
+        </Box>
       </Box>
       <Drawer placement="left" onClose={onClose} isOpen={isOpen}>
         <DrawerOverlay />
@@ -201,9 +215,9 @@ function SideDrawer() {
                 placeholder="Search by name or email"
                 mr={2}
                 value={search}
-                onChange={(e)=>{handleSearch(e.target.value)}}
+                onChange={(e) => { handleSearch(e.target.value) }}
               />
-              <Button colorScheme="green" onClick={()=>{handleSearch('')}}>ViewAll</Button>
+              <Button colorScheme="green" onClick={() => { handleSearch('') }}>ViewAll</Button>
             </Box>
             {loading ? (
               <Spinner />

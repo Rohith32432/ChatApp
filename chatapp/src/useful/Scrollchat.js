@@ -9,9 +9,64 @@ import {
 } from "./chatlogic";
 import { ChatState } from "../Context/context";
 
-const Scrollchat = ({ messages }) => {
+const Scrollchat = ({ messages ,type}) => {
   const { user } = ChatState();
+// console.log(messages);
 
+  if(type=='bot')
+  {
+    function parseresponse(msg) {
+      let parsedMsg = msg;
+      parsedMsg = parsedMsg.replace(/\n/g, '<br/>');
+      parsedMsg = parsedMsg.replace(/\*/g, '<h2>');
+    
+      return parsedMsg;
+    }
+    
+    return(
+    <>
+     <ScrollableFeed>
+      {messages &&
+        messages.map((m, i) => (
+          <div style={{ display: "flex" ,flexDirection:'column'}} key={i}>
+          
+          <span  style={{
+                backgroundColor: `${
+                  false ? "#BEE3F8" : "#B9F5D0"
+                }`,
+                borderRadius: "20px",
+                padding: "5px 15px",
+                maxWidth: "50%",
+                 marginLeft: 'auto'
+              }}>
+              {m?.prompt}
+          </span>
+            <span 
+              style={{
+                backgroundColor: `${
+                  user._id ? "#BEE3F8" : "#B9F5D0"
+                }`,
+                borderRadius: "20px",
+                padding: "5px 15px",
+                maxWidth: "60%",
+                textAlign:'left',
+                width:'max-content',
+
+              }
+              
+            }
+              
+            >
+            <span dangerouslySetInnerHTML={{ __html: parseresponse(m?.msg) }} />
+              {/* {JSON.stringify(m?.msg)} */}
+            </span>
+          </div>
+        ))}
+    </ScrollableFeed>
+    
+    </>
+  )
+  }
   return (
     <ScrollableFeed>
       {messages &&

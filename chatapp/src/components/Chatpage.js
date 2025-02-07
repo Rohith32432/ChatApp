@@ -14,8 +14,18 @@ const Chatpage = () => {
       <Box
         display={'flex'}
         flexDirection={{ lg: 'row', base:'column'}}
+       
+        overflow={'hidden'}
         gap={1}
-      >      {user && <SideDrawer />}
+      >
+        <Box  
+           display={'flex'}
+           flexDirection={{ lg: 'row', base:'column'}}
+         
+           gap={1}
+        >
+      {user && <SideDrawer />}
+          </Box>      
         <Box display="flex"
           justifyContent="space-between" w="100%" h="100vh" p={1} >
           {user && <MyChats fetchAgain={fetchAgain} />}

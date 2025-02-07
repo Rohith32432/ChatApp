@@ -1,6 +1,19 @@
 const Chat = require("../models/chatModel");
 const Message = require("../models/msgmodel");
 const User = require("../models/usermodel");
+const { GoogleGenerativeAI } = require("@google/generative-ai");
+
+const model=createbotinstance()
+function createbotinstance(){
+  const genAI = new GoogleGenerativeAI("AIzaSyAk1RWGtoLT1tSJTvL3SuL1SdP5yoFyHpo");
+  const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+  return model
+}
+async  function gemminibot(req,res) {
+  const prompt = req?.body.prompt
+  const result = await model.generateContent(prompt)
+  res.json({msg:  result.response.text(),prompt:prompt})
+}
 
 async function sendmessage(req,res){
     const { content, chatId } = req.body;
@@ -48,4 +61,4 @@ async function getallMsg(req,res){
       }
 }
 
-module.exports={sendmessage,getallMsg}
+module.exports={gemminibot,sendmessage,getallMsg}

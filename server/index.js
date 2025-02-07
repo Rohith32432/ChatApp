@@ -7,7 +7,8 @@ const { registerUser } = require('./controllers/useercontroller');
 const userrouter = require('./routes/userRoutes');
 const chatRoutes = require('./routes/chatroutes');
 const msgroutes = require('./routes/messagerouter');
-const path=require('path')
+const path=require('path');
+const { GoogleGenerativeAI } = require('@google/generative-ai');
 app.use(cors())
 app.use(express.json())
 main().catch(err => console.log(err));
@@ -18,7 +19,7 @@ async function main() {
   await mongoose.connect(url);
   console.log('DB Connected successfully ');
 }
- 
+
 app.get("/", (req, res) => {
   res.send("API is running..");
 });
@@ -83,6 +84,11 @@ io.on("connection", (socket) => {
       socket.in(user._id).emit("message recieved", newMessageRecieved);
     });
   });
+  socket.on('bot message',(botmsg)=>{
+      var chat=botmsg.msg
+      socket.in('bot').emit("bot recieved", chat);
+
+  })
 
   socket.off("setup", () => {
     console.log("USER DISCONNECTED");

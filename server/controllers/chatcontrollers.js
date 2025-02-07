@@ -71,7 +71,7 @@ const createGroupChat = asyncHandler(async (req, res) => {
   if (!req.body.users || !req.body.name) {
     return res.status(400).send({ message: "Please Fill all the feilds" });
   }
-  
+
   var users = JSON.parse(req.body.users);
 
   if (users.length < 2) {
@@ -114,7 +114,7 @@ const renameGroup = asyncHandler(async (req, res) => {
       new: true,
     }
   )
-    .populate("users", "-password") 
+    .populate("users", "-password")
     .populate("groupAdmin", "-password");
 
   if (!updatedChat) {
@@ -182,4 +182,5 @@ module.exports = {
   renameGroup,
   addToGroup,
   removeFromGroup,
+  
 };
