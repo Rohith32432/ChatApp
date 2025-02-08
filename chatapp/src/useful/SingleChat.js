@@ -46,7 +46,7 @@ function SingleChat({ fetchAgain, setFetchAgain }) {
           },
           config
         );
-        console.log(data);
+        // console.log(data);
         socket.emit("new message", data);
         setMessages([...messages, data]);
       } catch (error) {
@@ -83,7 +83,7 @@ function SingleChat({ fetchAgain, setFetchAgain }) {
           config
         );
         if(data) setIsTyping(false)
-          console.log(JSON.stringify(data?.msg),data);
+          // console.log(JSON.stringify(data?.msg),data);
           
         socket.emit("bot message", data);
         setbotmsg([...botmsg, data]);
@@ -120,7 +120,7 @@ function SingleChat({ fetchAgain, setFetchAgain }) {
         `${url}/api/messages/${selectedChat._id}`,
         config
       );
-      console.log(data);
+      // console.log(data);
       setMessages(data);
       setLoading(false);
 

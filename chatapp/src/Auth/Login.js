@@ -43,7 +43,7 @@ const Login = () => {
         { email, password },
         config
       );
-console.log(data);
+// console.log(data);
 if(status==201){
       localStorage.setItem("userInfo", JSON.stringify(data));
       toast({

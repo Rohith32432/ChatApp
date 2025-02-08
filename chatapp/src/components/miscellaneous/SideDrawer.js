@@ -73,7 +73,7 @@ function SideDrawer() {
       };
 
       const { data } = await axios.get(`${url}/api/user?search=${search}`, config);
-      console.log(data);
+      // console.log(data);
       setLoading(false);
       setSearchResult(data);
     } catch (error) {
@@ -89,7 +89,7 @@ function SideDrawer() {
   };
 
   const accessChat = async (userId) => {
-    console.log(userId);
+    // console.log(userId);
 
     try {
       setLoadingChat(true);
@@ -100,7 +100,7 @@ function SideDrawer() {
         },
       };
       const { data } = await axios.post(`${url}/api/chat`, { userId }, config);
-      console.log(data);
+      // console.log(data);
       if (!chats.find((c) => c._id === data._id)) setChats([data, ...chats]);
       setSelectedChat(data);
       setLoadingChat(false);
